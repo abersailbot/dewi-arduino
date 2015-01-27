@@ -100,7 +100,7 @@ int readWindSensor() {
   int windAngle=0;
   pulseLength = pulseIn(windSensorPin, HIGH, 2000);
   int magic = 29;
-  windAngle =((pulseLength*10)/29); // 29 is the magic number where pulse time of 1036 = 359
+  windAngle =((pulseLength*10)/magic); // 29 is the magic number where pulse time of 1036 = 359
   windAngle = windAngle - offset;//Compensate for offset
   windAngle = mod(windAngle); // Wrap Arround
   log_json_int("wind", windAngle);
