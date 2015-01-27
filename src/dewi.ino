@@ -94,11 +94,26 @@ float read_compass() {
     log_json_float("compass", cmps10.bearing());
 }
 
+int readWindSensor() {
+  int windSensorPin = 11;
+  int pulseLength=0;
+  int windAngle=0;
+  pulseLength = pulseIn(windSensorPin, HIGH, 2000);
+  int magic = 29;
+  windAngle =((pulseLength*10)/29); // 29 is the magic number where pulse time of 1036 = 359
+  windAngle = windAngle - offset;//Compensate for offset
+  windAngle = mod(windAngle); // Wrap Arround
+  log_json_int("wind", windAngle);
+}
+
 void loop() {
     read_line(current_line);
     switch (current_line[0]){
         case 'c':
             read_compass();
+            break;
+        case 'w':
+            readWindSensor();
             break;
         case 'r':
             set_rudder(get_amount(current_line));
