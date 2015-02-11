@@ -84,7 +84,9 @@ int get_amount(char* line) {
 
 float read_compass() {
   // read from the compass and output it
-  log_json_float("compass", Compass.get_bearing());
+  if (Compass.poll_data()){ // Send error if false(?)
+    log_json_float("compass", Compass.get_bearing());
+  }
 }
 
 int mod(int angle)
