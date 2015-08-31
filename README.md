@@ -3,8 +3,7 @@ dewi-arduino
 
 Code to run on dewi's arduino.
 
-Depends on [CMPS10](https://github.com/kragniz/CMPS10) to interact with the
-compass.
+Uses HMC6343 compass through compass.h
 
 Installing
 ----------
