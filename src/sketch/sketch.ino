@@ -71,7 +71,7 @@ void set_rudder(int amount) {
 }
 void set_sail(int amount) {
   // set the sail to amount
-  amount = constrain(amount, 1050, 1930);
+  amount = constrain(amount, 1100, 1930);
   sail.writeMicroseconds(amount);
   log_json_int("sail", amount);
 }
