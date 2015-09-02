@@ -11,9 +11,9 @@ int offset; //this is for the wind sensor
 char current_line[6]; // allocate some space for the string
 void setup() {
   Serial.begin(9600);
-  
+
   pinMode(windSensorPin, INPUT);
-  
+
   rudder.attach(10, 1060, 1920);
   sail.attach(9, 1050, 1930);
   // set default positions
@@ -55,7 +55,7 @@ void read_line(char* line) {
     c = Serial.read();
     if (c == '\n') {
       break;
-    } 
+    }
     else {
       line[index] = c;
     }
@@ -78,25 +78,29 @@ void set_sail(int amount) {
 int get_amount(char* line) {
   // return the number in a string such as "r1200" as an int
   int amount;
-  amount = (int) strtol(line+1, NULL, 10);
+  amount = (int) strtol(line + 1, NULL, 10);
   return amount;
 }
 
 float read_compass() {
   // read from the compass and output it
-  if (Compass.poll_data()){ // Send error if false(?)
+  if (Compass.poll_data()) { // Send error if false(?)
+    Serial.println("polling compass");
     log_json_float("compass", Compass.get_bearing());
+    Serial.println(Compass.get_bearing());
+  } else {
+    Serial.println("nope");
   }
 }
 
 int mod(int angle)
 {
-  if(angle > 359) {
+  if (angle > 359) {
     return mod(angle - 359);
-  } 
-  else if(angle < 0) {
+  }
+  else if (angle < 0) {
     return mod(359 - angle);
-  } 
+  }
   else {
     return angle;
   }
@@ -104,41 +108,43 @@ int mod(int angle)
 
 
 int readWindSensor() {
-  int pulseLength=0;
-  int windAngle=0;
+  int pulseLength = 0;
+  int windAngle = 0;
   pulseLength = pulseIn(windSensorPin, HIGH, 2000);
   int magic = 29;
-  windAngle =((pulseLength*10)/magic); // 29 is the magic number where pulse time of 1036 = 359
+  windAngle = ((pulseLength * 10) / magic); // 29 is the magic number where pulse time of 1036 = 359
   windAngle = windAngle - offset;//Compensate for offset
   windAngle = mod(windAngle); // Wrap Arround
   log_json_int("wind", windAngle);
 }
 
-void set_offset(int amount){
- offset = amount; 
-  
+void set_offset(int amount) {
+  offset = amount;
+
 }
 
 
 
 void loop() {
+  Serial.println("hey, listen!!");
   read_line(current_line);
-  switch (current_line[0]){
-  case 'c':
-    read_compass();
-    break;
-  case 'w':
-    readWindSensor();
-    break;
-  case 'r':
-    set_rudder(get_amount(current_line));
-    break;
-  case 's':
-    set_sail(get_amount(current_line));
-    break;
-  case 'o':
-    set_offset(get_amount(current_line));
-    break;
+  Serial.println(current_line);
+  switch (current_line[0]) {
+    case 'c':
+      read_compass();
+      break;
+    case 'w':
+      readWindSensor();
+      break;
+    case 'r':
+      set_rudder(get_amount(current_line));
+      break;
+    case 's':
+      set_sail(get_amount(current_line));
+      break;
+    case 'o':
+      set_offset(get_amount(current_line));
+      break;
   }
 }
 
