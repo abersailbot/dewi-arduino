@@ -85,11 +85,10 @@ int get_amount(char* line) {
 float read_compass() {
   // read from the compass and output it
   if (Compass.poll_data()) { // Send error if false(?)
-    Serial.println("polling compass");
     log_json_float("compass", Compass.get_bearing());
-    Serial.println(Compass.get_bearing());
+    
   } else {
-    Serial.println("nope");
+    
   }
 }
 
@@ -126,9 +125,13 @@ void set_offset(int amount) {
 
 
 void loop() {
-  Serial.println("hey, listen!!");
+  if(DEBUG == 1){
+    Serial.println("Running Debug in loop");
+  }  
   read_line(current_line);
-  Serial.println(current_line);
+  if(DEBUG == 1){
+    Serial.println(current_line);
+  }
   switch (current_line[0]) {
     case 'c':
       read_compass();
