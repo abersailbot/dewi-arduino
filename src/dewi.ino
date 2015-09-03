@@ -15,7 +15,7 @@ void setup() {
   pinMode(windSensorPin, INPUT);
 
   rudder.attach(10, 1060, 1920);
-  sail.attach(9, 1050, 1930);
+  sail.attach(9, 1100, 1930);
   // set default positions
   rudder.writeMicroseconds(1500);
   sail.writeMicroseconds(1500);
