@@ -53,7 +53,8 @@ void read_line(char* line) {
     while (Serial.available() == 0);
     // read a character
     c = Serial.read();
-    if (c == '\n') {
+    if (c == '\n' || c== '\r') {
+    	line[index]='\0';
       break;
     }
     else {
@@ -61,7 +62,7 @@ void read_line(char* line) {
     }
   }
   // terminate the string
-  line[index] = '\0';
+  line[index+1] = '\0';
 }
 void set_rudder(int amount) {
   // set the rudder to amount
@@ -148,6 +149,7 @@ void loop() {
     case 'o':
       set_offset(get_amount(current_line));
       break;
+     
   }
 }
 
