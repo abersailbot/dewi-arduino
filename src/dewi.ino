@@ -10,7 +10,7 @@ int windSensorPin = A2;
 int offset; //this is for the wind sensor
 char current_line[6]; // allocate some space for the string
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(windSensorPin, INPUT);
 
